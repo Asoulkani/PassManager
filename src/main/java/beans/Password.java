@@ -1,8 +1,8 @@
 //
-// Ce fichier a ï¿½tï¿½ gï¿½nï¿½rï¿½ par l'implï¿½mentation de rï¿½fï¿½rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b01 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b01 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Toute modification apportï¿½e ï¿½ ce fichier sera perdue lors de la recompilation du schï¿½ma source. 
-// Gï¿½nï¿½rï¿½ le : 2019.10.03 ï¿½ 02:29:13 PM WET 
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+// Généré le : 2019.10.03 à 05:11:10 PM WET 
 //
 
 
@@ -19,7 +19,7 @@ import javax.xml.bind.annotation.XmlValue;
 /**
  * <p>Classe Java pour anonymous complex type.
  * 
- * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
  * &lt;complexType>
@@ -46,7 +46,7 @@ public class Password {
     protected String description;
 
     /**
-     * Obtient la valeur de la propriï¿½tï¿½ value.
+     * Obtient la valeur de la propriété value.
      * 
      * @return
      *     possible object is
@@ -58,7 +58,7 @@ public class Password {
     }
 
     /**
-     * Dï¿½finit la valeur de la propriï¿½tï¿½ value.
+     * Définit la valeur de la propriété value.
      * 
      * @param value
      *     allowed object is
@@ -70,7 +70,7 @@ public class Password {
     }
 
     /**
-     * Obtient la valeur de la propriï¿½tï¿½ description.
+     * Obtient la valeur de la propriété description.
      * 
      * @return
      *     possible object is
@@ -82,7 +82,7 @@ public class Password {
     }
 
     /**
-     * Dï¿½finit la valeur de la propriï¿½tï¿½ description.
+     * Définit la valeur de la propriété description.
      * 
      * @param value
      *     allowed object is

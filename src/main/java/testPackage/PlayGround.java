@@ -8,7 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 import javax.xml.bind.JAXBException;
 
+import beans.Account;
 import security.Authentification;
+import security.PassManagement;
 import security.Utilities;
 
 public class PlayGround {
@@ -17,6 +19,7 @@ public class PlayGround {
 		//clipboardTest();
 		//hashTest();
 		authentificationTest();
+		//masterPassCreateTest();
 	}
 	
 	public static void authentificationTest()
@@ -24,6 +27,20 @@ public class PlayGround {
 		try {
 			Authentification.initAccountDataBase();
 		} catch (JAXBException e) {
+			e.printStackTrace();
+		}
+		
+		String userEnteredMasterPass = "pass1";
+		String userId = "user1";
+		
+		try {
+			Account account = Authentification.authentifyAccount(userId, userEnteredMasterPass);
+			if(account == null)
+				System.out.println("authentification failed");
+			else
+				System.out.println("welcom "+userId);
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
@@ -35,6 +52,12 @@ public class PlayGround {
 		StringSelection stringSelection = new StringSelection(myString);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
+	}
+	
+	public static void masterPassCreateTest()
+	{
+		String userEnteredMasterPass = "pass1";
+		System.out.println(PassManagement.createMasterPass(userEnteredMasterPass));
 	}
 	
 	public static void hashTest()

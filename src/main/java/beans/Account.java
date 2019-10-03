@@ -1,13 +1,15 @@
 //
-// Ce fichier a ï¿½tï¿½ gï¿½nï¿½rï¿½ par l'implï¿½mentation de rï¿½fï¿½rence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b01 
+// Ce fichier a été généré par l'implémentation de référence JavaTM Architecture for XML Binding (JAXB), v2.2.8-b01 
 // Voir <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
-// Toute modification apportï¿½e ï¿½ ce fichier sera perdue lors de la recompilation du schï¿½ma source. 
-// Gï¿½nï¿½rï¿½ le : 2019.10.03 ï¿½ 02:29:13 PM WET 
+// Toute modification apportée à ce fichier sera perdue lors de la recompilation du schéma source. 
+// Généré le : 2019.10.03 à 05:11:10 PM WET 
 //
 
 
 package beans;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
@@ -18,7 +20,7 @@ import javax.xml.bind.annotation.XmlType;
 /**
  * <p>Classe Java pour anonymous complex type.
  * 
- * <p>Le fragment de schï¿½ma suivant indique le contenu attendu figurant dans cette classe.
+ * <p>Le fragment de schéma suivant indique le contenu attendu figurant dans cette classe.
  * 
  * <pre>
  * &lt;complexType>
@@ -27,6 +29,7 @@ import javax.xml.bind.annotation.XmlType;
  *       &lt;sequence>
  *         &lt;element ref="{}UserId"/>
  *         &lt;element ref="{}MasterPass"/>
+ *         &lt;element ref="{}password" maxOccurs="unbounded" minOccurs="0"/>
  *       &lt;/sequence>
  *     &lt;/restriction>
  *   &lt;/complexContent>
@@ -38,7 +41,8 @@ import javax.xml.bind.annotation.XmlType;
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "userId",
-    "masterPass"
+    "masterPass",
+    "password"
 })
 @XmlRootElement(name = "account")
 public class Account {
@@ -47,9 +51,10 @@ public class Account {
     protected String userId;
     @XmlElement(name = "MasterPass", required = true)
     protected String masterPass;
+    protected List<Password> password;
 
     /**
-     * Obtient la valeur de la propriï¿½tï¿½ userId.
+     * Obtient la valeur de la propriété userId.
      * 
      * @return
      *     possible object is
@@ -61,7 +66,7 @@ public class Account {
     }
 
     /**
-     * Dï¿½finit la valeur de la propriï¿½tï¿½ userId.
+     * Définit la valeur de la propriété userId.
      * 
      * @param value
      *     allowed object is
@@ -73,7 +78,7 @@ public class Account {
     }
 
     /**
-     * Obtient la valeur de la propriï¿½tï¿½ masterPass.
+     * Obtient la valeur de la propriété masterPass.
      * 
      * @return
      *     possible object is
@@ -85,7 +90,7 @@ public class Account {
     }
 
     /**
-     * Dï¿½finit la valeur de la propriï¿½tï¿½ masterPass.
+     * Définit la valeur de la propriété masterPass.
      * 
      * @param value
      *     allowed object is
@@ -94,6 +99,35 @@ public class Account {
      */
     public void setMasterPass(String value) {
         this.masterPass = value;
+    }
+
+    /**
+     * Gets the value of the password property.
+     * 
+     * <p>
+     * This accessor method returns a reference to the live list,
+     * not a snapshot. Therefore any modification you make to the
+     * returned list will be present inside the JAXB object.
+     * This is why there is not a <CODE>set</CODE> method for the password property.
+     * 
+     * <p>
+     * For example, to add a new item, do as follows:
+     * <pre>
+     *    getPassword().add(newItem);
+     * </pre>
+     * 
+     * 
+     * <p>
+     * Objects of the following type(s) are allowed in the list
+     * {@link Password }
+     * 
+     * 
+     */
+    public List<Password> getPassword() {
+        if (password == null) {
+            password = new ArrayList<Password>();
+        }
+        return this.password;
     }
 
 }

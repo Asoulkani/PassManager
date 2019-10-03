@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <accountDataBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:noNamespaceSchemaLocation="cain.010.001.01.xsd">
-	
+	<account>
+		<UserId>27A534A25CF745B6C985EB782079A6FE8641B00003DADA14F392A2D01B9C790A</UserId>
+		<MasterPass>FFFFFFFF3125373A7F091711F0F0F0F0</MasterPass>
+	</account>
 </accountDataBase>

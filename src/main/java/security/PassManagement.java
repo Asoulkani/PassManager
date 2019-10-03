@@ -16,7 +16,7 @@ public class PassManagement {
 	public static String applyingPADDING_2(StringBuilder data)
 	{
 		data.append(PADDING_2_R);
-		data.insert(0, PADDING_2_R);
+		data.insert(0, PADDING_2_L);
 		return data.toString();
 	}
 	
