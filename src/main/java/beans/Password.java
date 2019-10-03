@@ -33,7 +33,6 @@ import javax.xml.bind.annotation.XmlValue;
  * 
  * 
  */
-@SuppressWarnings("restriction")
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
     "value"
