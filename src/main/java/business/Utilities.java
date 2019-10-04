@@ -1,4 +1,4 @@
-package security;
+package business;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;

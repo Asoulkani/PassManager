@@ -1,4 +1,4 @@
-package testPackage;
+package presentation;
 
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -8,10 +8,10 @@ import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 
 import beans.Account;
+import business.Authentification;
+import business.PassManagement;
+import business.Utilities;
 import dao.DaoXmlAccount;
-import security.Authentification;
-import security.PassManagement;
-import security.Utilities;
 
 public class PlayGround {
 
