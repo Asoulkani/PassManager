@@ -37,6 +37,7 @@ public class Authentification {
 	{
 		Account account = null;
 		for (Account ac : accountDataBase.getAccount()) {
+			System.out.println(ac.getUserId() + " | "+DatatypeConverter.printHexBinary(Utilities.hash256(userId)));
 			if(ac.getUserId().equals(DatatypeConverter.printHexBinary(Utilities.hash256(userId))))
 			{
 				System.out.println("userid correct");
@@ -46,6 +47,8 @@ public class Authentification {
 		}
 		if(account != null)
 		{
+			System.out.println(account.getMasterPass() + " | " +
+				PassManagement.createMasterPass(userEnteredMasterPass));
 			if(account.getMasterPass().equals(DatatypeConverter.printHexBinary(Utilities.hash256(
 				PassManagement.createMasterPass(userEnteredMasterPass)))))
 			{

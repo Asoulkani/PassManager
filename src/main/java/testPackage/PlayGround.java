@@ -31,7 +31,7 @@ public class PlayGround {
 		}
 		
 		String userEnteredMasterPass = "pass1";
-		String userId = "user1";
+		String userId = "User1";
 		
 		try {
 			Account account = Authentification.authentifyAccount(userId, userEnteredMasterPass);
@@ -57,7 +57,13 @@ public class PlayGround {
 	public static void masterPassCreateTest()
 	{
 		String userEnteredMasterPass = "pass1";
-		System.out.println(PassManagement.createMasterPass(userEnteredMasterPass));
+		try {
+			System.out.println(DatatypeConverter.printHexBinary(Utilities.hash256(
+					PassManagement.createMasterPass(userEnteredMasterPass))));
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	
 	public static void hashTest()
