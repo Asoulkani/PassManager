@@ -6,9 +6,9 @@ import java.awt.datatransfer.StringSelection;
 import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.JAXBException;
 
 import beans.Account;
+import dao.DaoXmlAccount;
 import security.Authentification;
 import security.PassManagement;
 import security.Utilities;
@@ -24,11 +24,8 @@ public class PlayGround {
 	
 	public static void authentificationTest()
 	{
-		try {
-			Authentification.initAccountDataBase();
-		} catch (JAXBException e) {
-			e.printStackTrace();
-		}
+		DaoXmlAccount dao = new DaoXmlAccount();
+		dao.init();
 		
 		String userEnteredMasterPass = "pass1";
 		String userId = "User1";

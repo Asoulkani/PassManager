@@ -1,42 +1,28 @@
 package security;
 
-import java.io.File;
 import java.security.NoSuchAlgorithmException;
 
 import javax.xml.bind.DatatypeConverter;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Unmarshaller;
 
 import beans.Account;
-import beans.AccountDataBase;
+import dao.DaoXmlAccount;
 
 public class Authentification {
-	
-	public static AccountDataBase accountDataBase = new AccountDataBase();
-	
-	public static void initAccountDataBase() throws JAXBException
-	{
-		JAXBContext context = JAXBContext.newInstance(AccountDataBase.class);
-		Unmarshaller unmarshaller = context.createUnmarshaller();
-		File file = new File("Data/MasterPass.xml");
-		accountDataBase = (AccountDataBase) unmarshaller.unmarshal(file);
-	}
-	
+	private static DaoXmlAccount dao = new DaoXmlAccount();
 	public static boolean createAccount(String userId, String userEnteredMasterPass) throws NoSuchAlgorithmException
 	{
 		Account account = new Account();
 		account.setUserId(DatatypeConverter.printHexBinary(Utilities.hash256(userId)));
 		account.setMasterPass(DatatypeConverter.printHexBinary(Utilities.hash256(
 				PassManagement.createMasterPass(userEnteredMasterPass))));
-		accountDataBase.getAccount().add(account);
+		dao.save(account);
 		return true;
 	}
 	
 	public static Account authentifyAccount(String userId,String userEnteredMasterPass) throws NoSuchAlgorithmException
 	{
 		Account account = null;
-		for (Account ac : accountDataBase.getAccount()) {
+		for (Account ac : dao.getAll()) {
 			System.out.println(ac.getUserId() + " | "+DatatypeConverter.printHexBinary(Utilities.hash256(userId)));
 			if(ac.getUserId().equals(DatatypeConverter.printHexBinary(Utilities.hash256(userId))))
 			{
