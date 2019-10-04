@@ -5,10 +5,11 @@ import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 
 import beans.Account;
-import dao.DaoXmlAccount;
+import dao.DataAccesObject;
+import dao.Factory;
 
 public class Authentification {
-	private static DaoXmlAccount dao = new DaoXmlAccount();
+	private static DataAccesObject<Account> dao = Factory.daoAccountGetInstance();
 	public static boolean createAccount(String userId, String userEnteredMasterPass) throws NoSuchAlgorithmException
 	{
 		Account account = new Account();
