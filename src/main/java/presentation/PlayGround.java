@@ -11,7 +11,6 @@ import beans.Account;
 import business.Authentification;
 import business.PassManagement;
 import business.Utilities;
-import dao.DaoXmlAccount;
 
 public class PlayGround {
 
@@ -24,11 +23,8 @@ public class PlayGround {
 	
 	public static void authentificationTest()
 	{
-		DaoXmlAccount dao = new DaoXmlAccount();
-		dao.init();
-		
-		String userEnteredMasterPass = "pass1";
-		String userId = "User1";
+		String userEnteredMasterPass = "pass2";
+		String userId = "User2";
 		
 		try {
 			Account account = Authentification.authentifyAccount(userId, userEnteredMasterPass);
@@ -53,7 +49,7 @@ public class PlayGround {
 	
 	public static void masterPassCreateTest()
 	{
-		String userEnteredMasterPass = "pass1";
+		String userEnteredMasterPass = "pass2";
 		try {
 			System.out.println(DatatypeConverter.printHexBinary(Utilities.hash256(
 					PassManagement.createMasterPass(userEnteredMasterPass))));
@@ -65,10 +61,11 @@ public class PlayGround {
 	
 	public static void hashTest()
 	{
-		String userId = "User1";
+		String userId = "User2";
 		String hashedUserIdToBeCompared = "27A534A25CF745B6C985EB782079A6FE8641B00003DADA14F392A2D01B9C790A";
 		try {
 			String hashedUserID = DatatypeConverter.printHexBinary(Utilities.hash256(userId));
+			System.out.println(hashedUserID);
 			if(hashedUserID.equals(hashedUserIdToBeCompared))
 				System.out.println("Correct user ID");
 			else

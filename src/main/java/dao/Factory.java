@@ -29,7 +29,9 @@ public class Factory {
 					if(line.substring(6).equals(DAO_FROM_XML))
 					{
 						bufReader.close();
-						return new DaoXmlAccount();
+						DaoXmlAccount daoXmlAccount = new DaoXmlAccount();
+						daoXmlAccount.init();
+						return daoXmlAccount; 
 					}
 					//else if() new type of persistence
 				}
