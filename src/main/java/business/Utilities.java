@@ -6,9 +6,12 @@ import java.util.Arrays;
 
 public class Utilities {
 
-	/*
+	/*=================================================
+	 * 
 	 * Xor function
-	 */
+	 * 
+	 =================================================*/
+	
 	public static byte[] xor(byte[] b1, byte[] b2) {
 		byte[] xor = new byte[b1.length];
 		for (int i = 0; i < b1.length; i++) {
@@ -17,9 +20,12 @@ public class Utilities {
 		return xor;
 	}
 
-	/*
-	 * application de la parite ODD sur un array of bytes
-	 */
+	/*=================================================
+	 * 
+	 * Apply ODD parity to a set of bytes 
+	 * 
+	 =================================================*/
+	
 	public static void adjustParity(byte[] bytes) {
 		for (int i = 0; i < bytes.length; i++) {
 			int b = bytes[i];
@@ -28,20 +34,35 @@ public class Utilities {
 		}
 	}
 
-	/*
-	 * verification de parite
-	 */
+	/*=================================================
+	 * 
+	 * check if the given bytes are odd parity adjusted 
+	 * 
+	 =================================================*/
+	
 	public static boolean isParityAdjusted(byte[] bytes) {
 		byte[] correct = (byte[]) bytes.clone();
 		adjustParity(correct);
 		return Arrays.equals(bytes, correct);
 	}
 	
+	/*=================================================
+	 * 
+	 * Hash 256 function 
+	 * 
+	 =================================================*/
+	
 	public static byte[] hash256(String data) throws NoSuchAlgorithmException
 	{
 		MessageDigest digest = MessageDigest.getInstance("SHA-256");
 		return digest.digest(data.getBytes());
 	}
+	
+	/*=================================================
+	 * 
+	 * Convert from String(ASCII) to HEX representation 
+	 * 
+	 =================================================*/
 	
 	public static String convertStringToHex(String str) {
 
@@ -56,7 +77,13 @@ public class Utilities {
 
 		return hex.toString().toUpperCase();
 	}
-
+	
+	/*=================================================
+	 * 
+	 * Convert from HEX representation to String(ASCII)  
+	 * 
+	 =================================================*/
+	
 	public static String convertHexToString(String hex) {
 
 		StringBuilder output = new StringBuilder("");

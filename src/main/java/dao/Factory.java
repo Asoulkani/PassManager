@@ -9,6 +9,18 @@ import java.io.Reader;
 
 import beans.Account;
 
+/*=================================================
+ * 
+ * this class is where all the data access object
+ * are created. it reads from a config file to know
+ * which type of persistence is used 
+ * example if the persistence type is XML in 
+ * the config file we will find a line with 
+ * the following :
+ * 		DAO = XML 
+ * 
+ =================================================*/
+
 public class Factory {
 
 	public static final String DAO_FROM_XML = "XML";
