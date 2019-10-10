@@ -2,25 +2,28 @@ package dao;
 
 import java.io.File;
 import java.util.List;
-import java.util.Optional;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
 import beans.Account;
 import beans.AccountDataBase;
+import beans.Password;
 
 public class DaoXmlAccount implements DataAccesObject<Account> {
 	
 	private static AccountDataBase accountDataBase = new AccountDataBase();
 	
-	@Override
-	public Optional<Account> get(long id) {
-		// TODO Auto-generated method stub
-		return null;
+	private static void refreshDataBaseXmlFile() throws JAXBException
+	{
+		JAXBContext context = JAXBContext.newInstance(AccountDataBase.class);
+		Marshaller marshaller = context.createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+		marshaller.marshal(accountDataBase, new File("Data/MasterPass.xml"));
 	}
-
+	
 	@Override
 	public List<Account> getAll() {
 		return accountDataBase.getAccount();
@@ -29,18 +32,40 @@ public class DaoXmlAccount implements DataAccesObject<Account> {
 	@Override
 	public void save(Account t) {
 		accountDataBase.getAccount().add(t);
+		try {
+			refreshDataBaseXmlFile();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	public void update(Account t, String[] params) {
-		// TODO Auto-generated method stub
-		
+	public void update(Account t) {
+		for (Account account : accountDataBase.getAccount()) {
+			if(account.getUserId().equals(t.getUserId()))
+			{
+				accountDataBase.getAccount().set(accountDataBase.getAccount().indexOf(account), t);
+				break;
+			}
+		}
+		try {
+			refreshDataBaseXmlFile();
+		} catch (JAXBException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	@Override
 	public void delete(Account t) {
-		// TODO Auto-generated method stub
-		
+		for (Account account : accountDataBase.getAccount()) {
+			if(account.getUserId().equals(t.getUserId()))
+			{
+				accountDataBase.getAccount().remove(account);
+				break;
+			}
+		}
 	}
 
 	@Override
@@ -56,6 +81,12 @@ public class DaoXmlAccount implements DataAccesObject<Account> {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public void addPasswordToExistantAccount(Account account,Password pass) {
+		account.getPassword().add(pass);
+		this.update(account);
 	}
 
 }

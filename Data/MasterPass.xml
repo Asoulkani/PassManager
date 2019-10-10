@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <accountDataBase xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:noNamespaceSchemaLocation="cain.010.001.01.xsd">
+	xsi:noNamespaceSchemaLocation="MasterPass.xsd">
 	<account>
 		<UserId>27A534A25CF745B6C985EB782079A6FE8641B00003DADA14F392A2D01B9C790A</UserId><!-- User1 -->
 		<MasterPass>CFDA3FA3ACCF80D3F194B898F4A5FA3EE77EEE231DBA49BA76C8FCDF8667CFD0</MasterPass><!-- pass1 -->
+		<password description="facebook"></password>
+		<password description="googleAccount"></password>
+		<password description="workIntranet"></password>
 	</account>
 	<account>
 		<UserId>0E238AE88AEF5A81BA9D297B5DF67E74AF15D168E5B765DB22227C91B8672285</UserId><!-- User2 -->
