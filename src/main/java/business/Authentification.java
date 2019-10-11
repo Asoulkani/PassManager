@@ -5,21 +5,19 @@ import java.security.NoSuchAlgorithmException;
 import javax.xml.bind.DatatypeConverter;
 
 import beans.Account;
-import dao.DataAccesObject;
-import dao.Factory;
 
 public class Authentification {
 	
-	/*=================================================
-	 * 
-	 * initialization of data access object 
-	 * at this level the object is initialized without 
-	 * knowing which persistence method is 
-	 * used(file, XML, ORACL, MYSQL, ...)
-	 * 
-	 =================================================*/
+	private static Account logedInAccount;
+
+	public static Account getAccount() {
+		return logedInAccount;
+	}
+
+	public static void setAccount(Account account) {
+		Authentification.logedInAccount = account;
+	}
 	
-	private static DataAccesObject<Account> dao = Factory.daoAccountGetInstance();
 	
 	/*=================================================
 	 * 
@@ -33,14 +31,14 @@ public class Authentification {
 	 * 
 	=================================================*/
 	
-	public static boolean createAccount(String userId, String userEnteredMasterPass) throws NoSuchAlgorithmException
+	public static Account createAccount(String userId, String userEnteredMasterPass) throws NoSuchAlgorithmException
 	{
 		Account account = new Account();
 		account.setUserId(DatatypeConverter.printHexBinary(Utilities.hash256(userId)));
 		account.setMasterPass(DatatypeConverter.printHexBinary(Utilities.hash256(
 				PassManagement.createMasterPass(userEnteredMasterPass))));
-		dao.save(account);
-		return true;
+		DataController.save(account);
+		return account;
 	}
 	
 	/*=================================================
@@ -61,7 +59,7 @@ public class Authentification {
 	public static Account authentifyAccount(String userId,String userEnteredMasterPass) throws NoSuchAlgorithmException
 	{
 		Account account = null;
-		for (Account ac : dao.getAll()) {
+		for (Account ac : DataController.getAll()) {
 			if(ac.getUserId().equals(DatatypeConverter.printHexBinary(Utilities.hash256(userId))))
 			{
 				account = ac;

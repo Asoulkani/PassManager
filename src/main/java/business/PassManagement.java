@@ -1,15 +1,35 @@
 package business;
 
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+
+import javax.crypto.BadPaddingException;
+import javax.crypto.IllegalBlockSizeException;
+import javax.crypto.NoSuchPaddingException;
+import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
 
 public class PassManagement {
+	
+	private static SecretKey masterPass;
+	
+	public static SecretKey getMasterPass() {
+		return masterPass;
+	}
+
+	public static void setMasterPass(SecretKey masterPass) {
+		PassManagement.masterPass = masterPass;
+	}
 
 	/*=================================================
 	 * 
 	 * Padding methode 1 : padding value
 	 * 
 	 =================================================*/
-	
+
 	public static final String PADDING_1 = "PADDINGPADDINGPA"; 
 	
 	/*=================================================
@@ -63,7 +83,7 @@ public class PassManagement {
 	
 	/*=================================================
 	 * 
-	 * generate a random password at least 48 character
+	 * generate a random password of 48 character
 	 * 
 	 =================================================*/
 	
@@ -71,6 +91,18 @@ public class PassManagement {
 	{
 		// to be implemented
 		return null;
+	}
+	
+	public static void copyPassToClipBoard(String cryptedPass) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
+	{
+		System.out.println("cryptedPass : "+cryptedPass);
+		String pass = Utilities.convertHexToString(DatatypeConverter.printHexBinary(
+							Cryptographie.decrypte(DatatypeConverter.parseHexBinary(cryptedPass), 
+									masterPass)));
+		System.out.println("pass : "+pass);
+		StringSelection stringSelection = new StringSelection(pass);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		clipboard.setContents(stringSelection, null);
 	}
 
 }
