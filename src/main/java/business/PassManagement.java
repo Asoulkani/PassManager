@@ -95,11 +95,9 @@ public class PassManagement {
 	
 	public static void copyPassToClipBoard(String cryptedPass) throws InvalidKeyException, NoSuchAlgorithmException, NoSuchPaddingException, IllegalBlockSizeException, BadPaddingException
 	{
-		System.out.println("cryptedPass : "+cryptedPass);
 		String pass = Utilities.convertHexToString(DatatypeConverter.printHexBinary(
 							Cryptographie.decrypte(DatatypeConverter.parseHexBinary(cryptedPass), 
 									masterPass)));
-		System.out.println("pass : "+pass);
 		StringSelection stringSelection = new StringSelection(pass);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);

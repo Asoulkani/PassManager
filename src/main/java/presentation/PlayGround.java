@@ -149,7 +149,7 @@ public class PlayGround {
 	{
 		Account account = new Account();
 		account.setUserId("User2");
-		account.setMasterPass("pass2");
+		account.setMasterPass("pass1");
 		Password password = new Password();
 		password.setDescription("Facebook");
 		password.setValue("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
