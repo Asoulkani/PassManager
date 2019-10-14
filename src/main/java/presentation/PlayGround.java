@@ -18,19 +18,20 @@ import beans.Account;
 import beans.Password;
 import business.Authentification;
 import business.Cryptographie;
+import business.DataController;
 import business.PassManagement;
 import business.Utilities;
 
 public class PlayGround {
 
 	public static void main(String[] args) {
-		//clipboardTest();
-		//hashTest();
-		//masterPassCreateTest();
-		//cryptPassTest();
+		// clipboardTest();
+		// hashTest();
+		// masterPassCreateTest();
+		// cryptPassTest();
 		mainApp();
 	}
-	
+
 	public static void mainApp()
 	{
 		Scanner sc = new Scanner(System.in);
@@ -131,12 +132,73 @@ public class PlayGround {
 					e.printStackTrace();
 				}
 				break;
-
+			case 2:
+				System.out.print("enter your Master Password : ");
+				while(true)
+					try {
+						if(!Authentification.getAccount().getMasterPass().equals(DatatypeConverter.printHexBinary(
+							Utilities.hash256(PassManagement.createMasterPass(sc.next())))))
+							System.out.print("wrong password !! Re-Enter the password : ");
+						else
+							break;
+					} catch (NoSuchAlgorithmException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				try {
+					Authentification.getAccount().getPassword().get(index)
+							.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
+					DataController.update(Authentification.getAccount());
+				} catch (InvalidKeyException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (NoSuchPaddingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IllegalBlockSizeException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (BadPaddingException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				break;
+			case 3:
+				Authentification.getAccount().getPassword().remove(index);
+				DataController.update(Authentification.getAccount());
+				break;
 			default:
 				break;
 			}
 			break;
-
+		case 2:
+			System.out.println("Describe the password : ");
+			Password password = new Password();
+			password.setDescription(sc.next());
+			try {
+				password.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
+				Authentification.getAccount().getPassword().add(password);
+				DataController.update(Authentification.getAccount());
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			break;
 		default:
 			break;
 		}
@@ -144,9 +206,8 @@ public class PlayGround {
 		
 		sc.close();
 	}
-	
-	public static void cryptPassTest()
-	{
+
+	public static void cryptPassTest() {
 		Account account = new Account();
 		account.setUserId("User2");
 		account.setMasterPass("pass1");
@@ -155,22 +216,21 @@ public class PlayGround {
 		password.setValue("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		account.getPassword().add(password);
 		String MasterPass = PassManagement.createMasterPass(account.getMasterPass());
-		System.out.println("MasterPass : "+MasterPass);
-		SecretKey key = new SecretKeySpec(DatatypeConverter.parseHexBinary(
-				MasterPass), "AES");
+		System.out.println("MasterPass : " + MasterPass);
+		SecretKey key = new SecretKeySpec(DatatypeConverter.parseHexBinary(MasterPass), "AES");
 		System.out.println("clear");
 		try {
 			StringBuilder paddedPass = new StringBuilder(password.getValue());
-			/*while(paddedPass.length() % 16 != 0)
-				paddedPass.append("A");*/ // only needed if the pass is generated without the generatePass methode
-			System.out.println("paddedPass : "+paddedPass+" paddedPass lentgh : "+paddedPass.length());
+			/*
+			 * while(paddedPass.length() % 16 != 0) paddedPass.append("A");
+			 */ // only needed if the pass is generated without the generatePass methode
+			System.out.println("paddedPass : " + paddedPass + " paddedPass lentgh : " + paddedPass.length());
 			String cryptedPass = DatatypeConverter.printHexBinary(Cryptographie.crypteAES(
-					DatatypeConverter.parseHexBinary(Utilities.convertStringToHex(paddedPass.toString())), 
-					key));
-			System.out.println("cryptedPass : "+cryptedPass);
-			String decryptedPass = DatatypeConverter.printHexBinary(Cryptographie.decrypte(DatatypeConverter.parseHexBinary(cryptedPass), 
-					key));
-			System.out.println("decryptedPass : "+Utilities.convertHexToString(decryptedPass));
+					DatatypeConverter.parseHexBinary(Utilities.convertStringToHex(paddedPass.toString())), key));
+			System.out.println("cryptedPass : " + cryptedPass);
+			String decryptedPass = DatatypeConverter
+					.printHexBinary(Cryptographie.decrypte(DatatypeConverter.parseHexBinary(cryptedPass), key));
+			System.out.println("decryptedPass : " + Utilities.convertHexToString(decryptedPass));
 		} catch (InvalidKeyException e) {
 			// TODO Auto-generated catch block
 			System.out.println("InvalidKeyException");
@@ -193,9 +253,8 @@ public class PlayGround {
 			e.printStackTrace();
 		}
 	}
-	
-	public static Account authentification(String userId,String userEnteredMasterPass)
-	{
+
+	public static Account authentification(String userId, String userEnteredMasterPass) {
 		Account account = null;
 		try {
 			account = Authentification.authentifyAccount(userId, userEnteredMasterPass);
@@ -205,35 +264,32 @@ public class PlayGround {
 		}
 		return account;
 	}
-	
-	public static void clipboardTest()
-	{
+
+	public static void clipboardTest() {
 		String myString = "This text will be copied into clipboard";
 		StringSelection stringSelection = new StringSelection(myString);
 		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
 		clipboard.setContents(stringSelection, null);
 	}
-	
-	public static void masterPassCreateTest()
-	{
+
+	public static void masterPassCreateTest() {
 		String userEnteredMasterPass = "pass2";
 		try {
-			System.out.println(DatatypeConverter.printHexBinary(Utilities.hash256(
-					PassManagement.createMasterPass(userEnteredMasterPass))));
+			System.out.println(DatatypeConverter
+					.printHexBinary(Utilities.hash256(PassManagement.createMasterPass(userEnteredMasterPass))));
 		} catch (NoSuchAlgorithmException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
-	
-	public static void hashTest()
-	{
+
+	public static void hashTest() {
 		String userId = "User2";
 		String hashedUserIdToBeCompared = "27A534A25CF745B6C985EB782079A6FE8641B00003DADA14F392A2D01B9C790A";
 		try {
 			String hashedUserID = DatatypeConverter.printHexBinary(Utilities.hash256(userId));
 			System.out.println(hashedUserID);
-			if(hashedUserID.equals(hashedUserIdToBeCompared))
+			if (hashedUserID.equals(hashedUserIdToBeCompared))
 				System.out.println("Correct user ID");
 			else
 				System.out.println("Incorrect user ID");

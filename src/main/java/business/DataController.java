@@ -21,5 +21,6 @@ public class DataController {
 	
 	public static void save(Account account) { dao.save(account);}
 	public static List<Account> getAll() { return dao.getAll();}
+	public static void update(Account account) { dao.update(account); }
 	
 }
