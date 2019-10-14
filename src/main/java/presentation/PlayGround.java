@@ -24,6 +24,10 @@ import business.Utilities;
 
 public class PlayGround {
 
+	public static final String EXIT = "E";
+	public static final String DISCONNECT = "D";
+	public static final String RETURN = "R";
+	
 	public static void main(String[] args) {
 		// clipboardTest();
 		// hashTest();
@@ -32,12 +36,8 @@ public class PlayGround {
 		mainApp();
 	}
 
-	public static void mainApp()
+	public static void loginInscription(Scanner sc)
 	{
-		Scanner sc = new Scanner(System.in);
-		System.out.println("==================================\n"
-				 		 + "          PassManager\n"
-				 		 + "==================================");
 		System.out.println("1 ==> Create Account : ");
 		System.out.println("2 ==> Loggin : ");
 		switch (Integer.parseInt(sc.next())) {
@@ -94,93 +94,59 @@ public class PlayGround {
 		default:
 			break;
 		}
-		System.out.println("1 ==> Passwords List : ");
-		System.out.println("2 ==> New password : ");
-		switch (Integer.parseInt(sc.next())) {
+	}
+	
+	public static void passwordsList(Scanner sc) {
+		int i = 0;
+		for (Password password : Authentification.getAccount().getPassword()) {
+			System.out.println("********************************\n"
+			 		 		 + "       "+i+" . "+password.getDescription()+"\n"
+			 		 		 + "********************************");
+			++i;
+		}
+		System.out.println("to copy a pass to the clipboard : the index of the password/1 | example : 0/1");
+		System.out.println("to update a pass : the index of the password/2 | example : 0/2");
+		System.out.println("to delete a pass : the index of the password/3 | example : 0/3");
+		String choice = sc.next();
+		int index = Integer.parseInt(choice.charAt(0)+"");
+		int action = Integer.parseInt(choice.charAt(2)+"");
+		switch (action) {
 		case 1:
-			int i = 0;
-			for (Password password : Authentification.getAccount().getPassword()) {
-				System.out.println("********************************\n"
-				 		 		 + "       "+i+" . "+password.getDescription()+"\n"
-				 		 		 + "********************************");
-				++i;
-			}
-			System.out.println("to copy a pass to the clipboard : the index of the password/1 | example : 0/1");
-			System.out.println("to update a pass : the index of the password/2 | example : 0/2");
-			System.out.println("to delete a pass : the index of the password/3 | example : 0/3");
-			String choice = sc.next();
-			int index = Integer.parseInt(choice.charAt(0)+"");
-			int action = Integer.parseInt(choice.charAt(2)+"");
-			switch (action) {
-			case 1:
-				try {
-					PassManagement.copyPassToClipBoard(Authentification.getAccount().getPassword().get(index).getValue());
-				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalBlockSizeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (BadPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-			case 2:
-				System.out.print("enter your Master Password : ");
-				while(true)
-					try {
-						if(!Authentification.getAccount().getMasterPass().equals(DatatypeConverter.printHexBinary(
-							Utilities.hash256(PassManagement.createMasterPass(sc.next())))))
-							System.out.print("wrong password !! Re-Enter the password : ");
-						else
-							break;
-					} catch (NoSuchAlgorithmException e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				try {
-					Authentification.getAccount().getPassword().get(index)
-							.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
-					DataController.update(Authentification.getAccount());
-				} catch (InvalidKeyException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchAlgorithmException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (NoSuchPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (IllegalBlockSizeException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} catch (BadPaddingException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				break;
-			case 3:
-				Authentification.getAccount().getPassword().remove(index);
-				DataController.update(Authentification.getAccount());
-				break;
-			default:
-				break;
+			try {
+				PassManagement.copyPassToClipBoard(Authentification.getAccount().getPassword().get(index).getValue());
+			} catch (InvalidKeyException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchAlgorithmException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalBlockSizeException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
 			break;
 		case 2:
-			System.out.println("Describe the password : ");
-			Password password = new Password();
-			password.setDescription(sc.next());
+			System.out.print("enter your Master Password : ");
+			while(true)
+				try {
+					if(!Authentification.getAccount().getMasterPass().equals(DatatypeConverter.printHexBinary(
+						Utilities.hash256(PassManagement.createMasterPass(sc.next())))))
+						System.out.print("wrong password !! Re-Enter the password : ");
+					else
+						break;
+				} catch (NoSuchAlgorithmException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			try {
-				password.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
-				Authentification.getAccount().getPassword().add(password);
+				Authentification.getAccount().getPassword().get(index)
+						.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
 				DataController.update(Authentification.getAccount());
 			} catch (InvalidKeyException e) {
 				// TODO Auto-generated catch block
@@ -199,11 +165,66 @@ public class PlayGround {
 				e.printStackTrace();
 			}
 			break;
+		case 3:
+			Authentification.getAccount().getPassword().remove(index);
+			DataController.update(Authentification.getAccount());
+			break;
 		default:
 			break;
 		}
-		
-		
+	}
+	
+	public static void addNewPass(Scanner sc)
+	{
+		System.out.println("Describe the password : ");
+		Password password = new Password();
+		password.setDescription(sc.next());
+		try {
+			password.setValue(PassManagement.cryptPass(PassManagement.generatePassword(48)));
+			Authentification.getAccount().getPassword().add(password);
+			DataController.update(Authentification.getAccount());
+		} catch (InvalidKeyException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchAlgorithmException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (NoSuchPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IllegalBlockSizeException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (BadPaddingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
+	public static void passManagement(Scanner sc)
+	{
+		System.out.println("1 ==> Passwords List : ");
+		System.out.println("2 ==> New password : ");
+		switch (Integer.parseInt(sc.next())) {
+		case 1:
+			passwordsList(sc);
+			break;
+		case 2:
+			addNewPass(sc);
+			break;
+		default:
+			break;
+		}
+	}
+	
+	public static void mainApp()
+	{
+		Scanner sc = new Scanner(System.in);
+		System.out.println("==================================\n"
+				 		 + "          PassManager\n"
+				 		 + "==================================");
+		loginInscription(sc);
+		passManagement(sc);
 		sc.close();
 	}
 
