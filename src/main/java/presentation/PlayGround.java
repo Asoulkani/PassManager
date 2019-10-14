@@ -21,6 +21,7 @@ import business.Cryptographie;
 import business.DataController;
 import business.PassManagement;
 import business.Utilities;
+import exception.InvalidLengthException;
 
 public class PlayGround {
 
@@ -33,9 +34,20 @@ public class PlayGround {
 		// hashTest();
 		// masterPassCreateTest();
 		// cryptPassTest();
-		mainApp();
+		 mainApp();
+		// generatePassTest();
 	}
 
+	public static void generatePassTest()
+	{
+		try {
+			System.out.println(PassManagement.generatePassword(48));
+		} catch (InvalidLengthException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	
 	public static void loginInscription(Scanner sc)
 	{
 		System.out.println("1 ==> Create Account : ");
@@ -190,11 +202,20 @@ public class PlayGround {
 				} catch (BadPaddingException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+				} catch (InvalidLengthException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
 				}
 				break;
 			case 3:
-				Authentification.getAccount().getPassword().remove(index);
-				DataController.update(Authentification.getAccount());
+				try {
+
+					Authentification.getAccount().getPassword().remove(index);
+					DataController.update(Authentification.getAccount());
+				} catch (IndexOutOfBoundsException e) {
+					System.out.println(index + " : no password with the specified index !!!");
+					passwordsList(sc);
+				}
 				break;
 			default:
 				break;
@@ -241,6 +262,9 @@ public class PlayGround {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} catch (BadPaddingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvalidLengthException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}

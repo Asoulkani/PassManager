@@ -5,12 +5,15 @@ import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Random;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
 import javax.xml.bind.DatatypeConverter;
+
+import exception.InvalidLengthException;
 
 public class PassManagement {
 
@@ -92,14 +95,24 @@ public class PassManagement {
 	/*
 	 * =================================================
 	 * 
-	 * generate a random password of 48 character
+	 * generate a random password, the length must be 
+	 * a multiple of 16
 	 * 
 	 * =================================================
 	 */
 
-	public static String generatePassword(int lentgh) {
-		
-		return "BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB";
+	public static String generatePassword(int length) throws InvalidLengthException {
+		if(length % 16 == 0)
+		{
+			StringBuilder pass = new StringBuilder();
+			Random random = new Random();
+			for (int i = 0; i < length; i++) {
+				pass.append((char) (random.nextInt(125 - 32)+32));  //125 the ascii code of } and 32 is the code of space
+			}
+			return pass.toString();
+		}
+		else
+			throw new InvalidLengthException();
 	}
 	
 	/*
