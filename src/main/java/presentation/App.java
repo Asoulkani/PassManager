@@ -1,8 +1,5 @@
 package presentation;
 
-import java.awt.Toolkit;
-import java.awt.datatransfer.Clipboard;
-import java.awt.datatransfer.StringSelection;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Scanner;
@@ -10,42 +7,36 @@ import java.util.Scanner;
 import javax.crypto.BadPaddingException;
 import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.NoSuchPaddingException;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import beans.Account;
 import beans.Password;
 import business.Authentification;
-import business.Cryptographie;
 import business.DataController;
 import business.PassManagement;
 import business.Utilities;
 import exception.InvalidLengthException;
 
-public class PlayGround {
-
+public class App {
+	
 	public static final String EXIT = "E";
 	public static final String DISCONNECT = "D";
 	public static final String RETURN = "R";
 	
 	public static void main(String[] args) {
-		// clipboardTest();
-		// hashTest();
-		// masterPassCreateTest();
-		// cryptPassTest();
-		 mainApp();
-		// generatePassTest();
-	}
-
-	public static void generatePassTest()
-	{
-		try {
-			System.out.println(PassManagement.generatePassword(48));
-		} catch (InvalidLengthException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		Scanner sc = new Scanner(System.in);
+		System.out.println("==================================\n"
+				 		 + "          PassManager\n"
+				 		 + "==================================");
+		System.out.println("-------- Navigation Options : --------");
+		System.out.println("E : exit the PassManager.");
+		System.out.println("D : Disconnect.");
+		System.out.println("R : Return.");
+		
+		loginInscription(sc);
+		passManagement(sc);
+		sc.close();
 	}
 	
 	public static void loginInscription(Scanner sc)
@@ -120,6 +111,35 @@ public class PlayGround {
 		}
 	}
 	
+	public static void passManagement(Scanner sc)
+	{
+		System.out.println("1 ==> Passwords List : ");
+		System.out.println("2 ==> New password : ");
+		String userInput = sc.next();
+		if(userInput.equals(EXIT))
+			System.exit(0);
+		else if(userInput.equals(DISCONNECT))
+		{
+			Authentification.setAccount(null);
+			PassManagement.setMasterPass(null);
+			loginInscription(sc);
+			passManagement(sc);
+		}
+		else
+		{
+			switch (Integer.parseInt(userInput)) {
+			case 1:
+				passwordsList(sc);
+				break;
+			case 2:
+				addNewPass(sc);
+				break;
+			default:
+				break;
+			}
+		}
+	}
+
 	public static void passwordsList(Scanner sc) {
 		int i = 0;
 		for (Password password : Authentification.getAccount().getPassword()) {
@@ -272,98 +292,6 @@ public class PlayGround {
 		passwordsList(sc);
 	}
 	
-	public static void passManagement(Scanner sc)
-	{
-		System.out.println("1 ==> Passwords List : ");
-		System.out.println("2 ==> New password : ");
-		String userInput = sc.next();
-		if(userInput.equals(EXIT))
-			System.exit(0);
-		else if(userInput.equals(DISCONNECT))
-		{
-			Authentification.setAccount(null);
-			PassManagement.setMasterPass(null);
-			loginInscription(sc);
-			passManagement(sc);
-		}
-		else
-		{
-			switch (Integer.parseInt(userInput)) {
-			case 1:
-				passwordsList(sc);
-				break;
-			case 2:
-				addNewPass(sc);
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	
-	public static void mainApp()
-	{
-		Scanner sc = new Scanner(System.in);
-		System.out.println("==================================\n"
-				 		 + "          PassManager\n"
-				 		 + "==================================");
-		System.out.println("-------- Navigation Options : --------");
-		System.out.println("E : exit the PassManager.");
-		System.out.println("D : Disconnect.");
-		System.out.println("R : Return.");
-		
-		loginInscription(sc);
-		passManagement(sc);
-		sc.close();
-	}
-
-	public static void cryptPassTest() {
-		Account account = new Account();
-		account.setUserId("User2");
-		account.setMasterPass("pass1");
-		Password password = new Password();
-		password.setDescription("Facebook");
-		password.setValue("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
-		account.getPassword().add(password);
-		String MasterPass = PassManagement.createMasterPass(account.getMasterPass());
-		System.out.println("MasterPass : " + MasterPass);
-		SecretKey key = new SecretKeySpec(DatatypeConverter.parseHexBinary(MasterPass), "AES");
-		System.out.println("clear");
-		try {
-			StringBuilder paddedPass = new StringBuilder(password.getValue());
-			/*
-			 * while(paddedPass.length() % 16 != 0) paddedPass.append("A");
-			 */ // only needed if the pass is generated without the generatePass methode
-			System.out.println("paddedPass : " + paddedPass + " paddedPass lentgh : " + paddedPass.length());
-			String cryptedPass = DatatypeConverter.printHexBinary(Cryptographie.crypteAES(
-					DatatypeConverter.parseHexBinary(Utilities.convertStringToHex(paddedPass.toString())), key));
-			System.out.println("cryptedPass : " + cryptedPass);
-			String decryptedPass = DatatypeConverter
-					.printHexBinary(Cryptographie.decrypte(DatatypeConverter.parseHexBinary(cryptedPass), key));
-			System.out.println("decryptedPass : " + Utilities.convertHexToString(decryptedPass));
-		} catch (InvalidKeyException e) {
-			// TODO Auto-generated catch block
-			System.out.println("InvalidKeyException");
-			e.printStackTrace();
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			System.out.println("NoSuchAlgorithmException");
-			e.printStackTrace();
-		} catch (NoSuchPaddingException e) {
-			// TODO Auto-generated catch block
-			System.out.println("NoSuchPaddingException");
-			e.printStackTrace();
-		} catch (IllegalBlockSizeException e) {
-			// TODO Auto-generated catch block
-			System.out.println("IllegalBlockSizeException");
-			e.printStackTrace();
-		} catch (BadPaddingException e) {
-			// TODO Auto-generated catch block
-			System.out.println("BadPaddingException");
-			e.printStackTrace();
-		}
-	}
-
 	public static Account authentification(String userId, String userEnteredMasterPass) {
 		Account account = null;
 		try {
@@ -374,39 +302,4 @@ public class PlayGround {
 		}
 		return account;
 	}
-
-	public static void clipboardTest() {
-		String myString = "This text will be copied into clipboard";
-		StringSelection stringSelection = new StringSelection(myString);
-		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
-		clipboard.setContents(stringSelection, null);
-	}
-
-	public static void masterPassCreateTest() {
-		String userEnteredMasterPass = "pass2";
-		try {
-			System.out.println(DatatypeConverter
-					.printHexBinary(Utilities.hash256(PassManagement.createMasterPass(userEnteredMasterPass))));
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
-	public static void hashTest() {
-		String userId = "User2";
-		String hashedUserIdToBeCompared = "27A534A25CF745B6C985EB782079A6FE8641B00003DADA14F392A2D01B9C790A";
-		try {
-			String hashedUserID = DatatypeConverter.printHexBinary(Utilities.hash256(userId));
-			System.out.println(hashedUserID);
-			if (hashedUserID.equals(hashedUserIdToBeCompared))
-				System.out.println("Correct user ID");
-			else
-				System.out.println("Incorrect user ID");
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
-
 }
